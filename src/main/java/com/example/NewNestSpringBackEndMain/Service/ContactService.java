@@ -8,14 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContactService {
 
-    private final ContactRepository contactRepository;
-
     @Autowired
-    public ContactService(ContactRepository contactRepository) {
-        this.contactRepository = contactRepository;
-    }
+    private ContactRepository contactRepository;
 
-    public void saveContact(Contact contact) {
-        contactRepository.save(contact);
+    public Contact saveContactMessage(Contact contact) {
+        if (!contact.isAgreedToTerms()) {
+            throw new IllegalArgumentException("User must agree to terms");
+        }
+        return contactRepository.save(contact);
     }
 }

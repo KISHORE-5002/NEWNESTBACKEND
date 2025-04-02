@@ -2,9 +2,11 @@ package com.example.NewNestSpringBackEndMain.Controller;
 
 import com.example.NewNestSpringBackEndMain.Module.Contact;
 import com.example.NewNestSpringBackEndMain.Service.ContactService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -12,19 +14,15 @@ import org.springframework.web.bind.annotation.*;
 public class ContactController {
 
     @Autowired
-    private final ContactService contactService;
-
-    public ContactController(ContactService contactService) {
-        this.contactService = contactService;
-    }
+    private ContactService contactService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addContact(@RequestBody Contact contact) {
+    public ResponseEntity<?> addContact(@Valid @RequestBody Contact contact) {
         try {
-            contactService.saveContact(contact);
-            return ResponseEntity.ok("Contact form submitted successfully");
+            Contact savedContact = contactService.saveContactMessage(contact);
+            return ResponseEntity.ok(savedContact);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error submitting contact form: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Error saving contact: " + e.getMessage());
         }
     }
 }
