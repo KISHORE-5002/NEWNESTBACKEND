@@ -1,13 +1,10 @@
 package com.example.NewNestSpringBackEndMain.Module;
 
 import jakarta.persistence.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "contacts")
-@CrossOrigin(origins = "http://localhost:8080/api/contacts/add")
 public class Contact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,28 +28,29 @@ public class Contact {
     private String message;
 
     @Column(nullable = false)
-    private boolean agreedToTerms;
+    private boolean agree;
 
-    @Column(name = "submission_date")
-    private LocalDateTime submissionDate = LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters and Setters
+    // Getters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
     public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
     public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
     public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
     public String getSubject() { return subject; }
-    public void setSubject(String subject) { this.subject = subject; }
     public String getMessage() { return message; }
+    public boolean isAgree() { return agree; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    // Setters
+    public void setId(Long id) { this.id = id; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public void setSubject(String subject) { this.subject = subject; }
     public void setMessage(String message) { this.message = message; }
-    public boolean isAgreedToTerms() { return agreedToTerms; }
-    public void setAgreedToTerms(boolean agreedToTerms) { this.agreedToTerms = agreedToTerms; }
-    public LocalDateTime getSubmissionDate() { return submissionDate; }
-    public void setSubmissionDate(LocalDateTime submissionDate) { this.submissionDate = submissionDate; }
+    public void setAgree(boolean agree) { this.agree = agree; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

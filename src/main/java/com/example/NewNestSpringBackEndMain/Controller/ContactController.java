@@ -1,28 +1,28 @@
 package com.example.NewNestSpringBackEndMain.Controller;
 
 import com.example.NewNestSpringBackEndMain.Module.Contact;
-import com.example.NewNestSpringBackEndMain.Service.ContactService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.NewNestSpringBackEndMain.Repository.ContactRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/contacts")
-@CrossOrigin(origins = "http://localhost:3000")
 public class ContactController {
 
-    @Autowired
-    private ContactService contactService;
+    private final ContactRepository contactRepository;
+
+    public ContactController(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addContact(@Valid @RequestBody Contact contact) {
+    public ResponseEntity<String> addContact(@RequestBody Contact contact) {
         try {
-            Contact savedContact = contactService.saveContactMessage(contact);
-            return ResponseEntity.ok(savedContact);
+            contactRepository.save(contact);
+            return ResponseEntity.ok("Contact message saved successfully");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error saving contact: " + e.getMessage());
+            return ResponseEntity.internalServerError()
+                    .body("Failed to save contact message");
         }
     }
 }
